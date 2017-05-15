@@ -1,6 +1,6 @@
 # Number_SMart_GAme.V1
 ###### This is just a game to improve your knowledge of numbers, starting at 1-100.
-## Import Features
+## Important Features
 - Encourage users to continue playing the game
 - Has Two levels, each with different difficulty settings.
 - Has a flexible and robust feedback system... i think
