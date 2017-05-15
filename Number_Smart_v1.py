@@ -1,7 +1,7 @@
 import easygui
 from random import randint
 USER_NAME = 0
-user_total = 20
+user_total = 0
 user_prog = 0
 question = 0
 while USER_NAME == 0:
@@ -15,7 +15,7 @@ while user_total != 20:
     if user_total == 10:
         easygui.msgbox("Congrats! You have passed the first level! Level 2 will be harder since the numbers are now between 0-1000. GET READY!")
         user_prog = 2
-        
+
     while user_total != 20:
         number_A = 0
         number_B = 0
@@ -43,19 +43,19 @@ while user_total != 20:
                         easygui.msgbox("CORRECT!, You got it right on the spot!")
                         user_total += 1
                         break
-                        
+
                     elif user_answer == number_B:
                         easygui.msgbox("You were so close!, it was number {} ".format (number_A))
                         break
                     else:
                         easygui.msgbox("You didn't type any of the numbers, try again")
-                        
+
                 elif number_B > number_A:
                     if user_answer == number_B:
                         easygui.msgbox("Good Job!, you were 100% Correct, KEEP GOING!")
                         user_total += 1
                         break
-                    
+
                     elif user_answer == number_A:
                         easygui.msgbox("Man you had it so close!, the correct answer was " + number_B)
                         break
@@ -65,7 +65,7 @@ while user_total != 20:
                     if user_answer == number_A or user_answer == number_B:
                         easygui.msgbox("They were the same numbers!, so none of them was bigger")
                     break
-                        
+
         elif question == 2:
             while user_answer != 0:
                 user_answer = 0
@@ -75,19 +75,19 @@ while user_total != 20:
                         easygui.msgbox("THATS RIGHT!, You're very smart indeed!")
                         user_total += 1
                         break
-                    
+
                     elif user_answer == number_B:
                         easygui.msgbox("So clooooooose!!, the right answer was " + number_A)
                         break
                     else:
                         easygui.msgbox("You didn't type any of the numbers try again")
-                        
+
                 elif number_B < number_A:
                     if user_answer == number_B:
                         easygui.msgbox("100% Correct, you’re rampaging through the questions!”)")
                         user_total += 1
                         break
-                    
+
                     elif user_answer == number_A:
                         easygui.msgbox("Oh man! At least you tried, the correct answer was " + number_B)
                         break
@@ -100,14 +100,6 @@ while user_total != 20:
         # user_answer is set to 0 to end both loops, break is also a half measure in case user_answer does not end the loop.
         user_answer = 0
         break
-    
+
 #END OF GAME SCREEN, AUTOMATICALLY TERMINATES GAME
 easygui.msgbox("GOOD JOB {}! You finished both level 1 and 2 of this game, feel free to try again if you want to improve your skills even more!".format(USER_NAME))
-
-
-
-
-
-
-                        
-                                               
