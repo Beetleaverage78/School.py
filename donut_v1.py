@@ -1,12 +1,51 @@
 progress = True
 
-CHOCOLATE_PRICE = float(2.50)
-CARAMEL_PRICE = float(2.50)
-CINNAMON_PRICCE = float(1.20)
+CHOCOLATE_CARAMEL_PRICE = float(2.50)
+CINNAMON_PRICE = float(1.20)
 
 customer_num = 0
 
 def DonutQuery():
+    donut_count = []
+    donut_type_total = []
+    donut_type = {}
+    user_donut = 0
+    total_cost = 0
+
+    print("---------------------------")
+    print("Donut Query Function (v1)")
+    print("---------------------------")
+    print("What types of Donut is to be ordered?")
+    print("Chocolate Donut[1] Caramel Donut[2] Cinnamon Donut[3]")
+    print("Pick the Donuts corresponding with their numbers, seperated by spaces")
+
+    donut_count = input("Donuts: ").split()     
+    print(donut_count)
+    
+        
+    for donut in donut_count:
+        if donut == '1':
+            user_input = int(input("How many Chocolate Donuts? ($2.50 each): "))
+            donut_type["Chocolate"] = user_input
+        elif donut == '2':
+            user_input = int(input("How many Caramel Donuts? ($2.50 each): "))
+            donut_type["Caramel"] = user_input
+        elif donut == '3':
+            user_input = int(input("How many Cinnamon Donuts? ($1.20 each: "))
+            donut_type["Cinnamon"] = user_input
+
+    print(donut_type)
+    for donut, amount in donut_type.items():
+        if donut == "Chocolate" or donut == "Caramel":
+            donut_type_cost = CHOCOLATE_CARAMEL_PRICE * amount
+        elif donut == "Cinnamon":
+            donut_type_cost = CINNAMON_PRICE * amount
+            
+        donut_type_total.extend([donut, donut_type_cost])
+        total_cost += donut_type_cost
+    
+    print(total_cost)
+    print(donut_type_total)
     
     
 def CalculateQuery():
@@ -27,12 +66,12 @@ def InputQuery(input_details, customer_num):
         elif i == 2:
             user_input = input("Customer's Phone Number: ")
         elif i == 3:
-            user_input = Donut_Query()
+            user_input = DonutQuery()
         elif i == 4:
             break
         
         input_details.append(user_input)
-
+        
     return input_details, customer_num
 
 
@@ -42,7 +81,7 @@ input_details, customer_num = InputQuery(input_details, customer_num)
 
 print(input_details)
 print("customer_num, date_order, fname, lname, customer_phone, donut_order")
-print("Fname and Lnam is {}".format(input_details[2]))
+
 
 
 
