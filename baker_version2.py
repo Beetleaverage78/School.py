@@ -20,17 +20,18 @@ def systemMain():
     while progress == True:
         while True:
             owner_input = str(input("Customer First & Last Name: "))
-            if owner_input.isalpha():
+            if all(x.isalpha() or x.isspace() for x in owner_input):
                 customer_name = owner_input
                 print("--------------------")
                 print("Order for {}".format(customer_name))
                 break
-            elif owner_input.isdigit():
+            else:
                 print("That does not look like a name at all. Required Format (e.g. Ellan Bugas)")
         try:
             order_list = []
             order_count = {}
-            sub_total = []           
+            sub_total = []
+            local_order = []
             while True:
                 try:
                     print("Enter either Cookies(1) Cupcakes(2) Cake(3)")
@@ -44,7 +45,7 @@ def systemMain():
                 except ValueError:
                     order_list = []
                     print("Thats not 1, 2, or 3.")
-
+                    
             def MaxMinOrder(msg, maximum):
                 while True:
                     try:
@@ -66,7 +67,6 @@ def systemMain():
                     owner_input = MaxMinOrder(owner_input, cookie_cupcake_max)
                     cost = round(owner_input * COOKIES_PRICE)
                     order_count["Cookies Pack"] = [owner_input, cost]
-        
                     
                 elif order == '2':
                     owner_input = "Quantity of Cupcakes Packs(${0:.2f} each): ".format(CUPCAKES_PRICE)
@@ -74,29 +74,24 @@ def systemMain():
                     cost = round(owner_input * CUPCAKES_PRICE)
                     order_count["Cupcakes Pack"] = [owner_input, cost]
                     
-                    
                 elif order == '3':
                     owner_input = "Quantity of Cakes(${0:.2f} each): ".format(CAKE_PRICE)
                     owner_input = MaxMinOrder(owner_input, cake_max)
                     cost = round(owner_input * CAKE_PRICE)
                     order_count["Cakes"] = [owner_input, cost]
 
-            
+            local_order.append(customer_name)
             print("======================")
             print("Current Order Details")
             print("----------------------")
-            local_order = []
-            local_order.
             for goods, amount in order_count.items():
-                local_order.append(goods)
+                local_order.append([goods, amount[0], amount[1]])
                 sub_total.append(amount[1])
                 print("Order for {}".format(goods))
                 print("Amount: {}".format(amount[0]))
                 print("Sub Total: ${0:.2f}".format(amount[1]))
                 print("======================")
-                
-            save_order.append(customer_name)
-            
+            save_order.append(local_order)
             
         except StopIteration:
             pass
@@ -106,7 +101,7 @@ def systemMain():
             print("-------------------")
             print(save_order)
             print("-------------------")
-            total_cost = sum(sub_total, 10)
+            total_cost += sum(sub_total, 10)
             print("Total Cost + $10 Travel Fee: ${0:.2f}".format(total_cost))
             print("======================")
             while True:
@@ -120,6 +115,7 @@ def systemMain():
                 elif owner_input == 'No' or owner_input == 'no':
                     print("-------------------")
                     print("Alright..")
+                    print("Order Details Imported to order_book.txt - {}".format(SET_DATE.strftime("%D")))
                     progress = False
                     break
                 else:
@@ -128,14 +124,31 @@ def systemMain():
                     
         if progress == False:
             order_file = open("order_book.txt", "a")
-            order_file.write("\n====================================")
-            order_file.write("{} - {}".format(SET_DATE.strftime("%D"), SET_DATE.strftime("%A")))
-            order_file.write("\n------------------------------------")
-
-        
+            order_file.write("====================================")
+            order_file.write("\n{} - {} Order Details".format(SET_DATE.strftime("%D"), SET_DATE.strftime("%A")))
+            order_file.write("\n[BakedGoods][Amount][SubCost]")
+            order_file.write("\n------------------------------------\n")
+            for name in save_order:
+                count = 0
+                while True:
+                    order_file.write("Order for: {}".format(name[0]))
+                    for i in range(len(name)):
+                        if i != count:
+                            break
+                        else:
+                            if count != 0:
+                                order_file.write("\n{}".format(name[count]))
+                        count += 1
+                    break
+                order_file.write("\n------------------------------------\n")
+                
+            order_file.write("Total Cost of Orders + Travel Fee = ${}".format(total_cost))
+            order_file.write("\n------------------------------------\n")
+            order_file.close()
+                            
 def systemAdmin():
     print("Local Bakery Calculator")
     print("----------------------")
-    grand_total = systemMain()
+    systemMain()
                 
 systemAdmin()
