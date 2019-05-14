@@ -1,0 +1,161 @@
+=======================================
+Pcode_3 - Efficiency Check
+
+=======================================
+import datetime module as dt
+
+Set COOKIES_PRICE to 16.20
+Set CUPCAKES_PRICE to 21
+Set CAKE_PRICE to 59.50
+
+Set cookie_cupcake_max to 10
+Set cake_max to 5
+
+Set SET_DATE to the date today using datetime module
+Display to user "--------------------"
+                "{} - {}" and format to short date and day (e.g. 3/4/19 - Tuesday)
+                "--------------------"
+
+Define a function named systemMain():
+    Set customer_name to 0
+    Set total_cost to 0
+    Set save_order to empty list
+    Set progress to True
+    while progress is equal to True:
+        while True infinite Loop:
+            Ask "Customer First & Last Name: " and store in owner_input
+            if owner_input is alphabet, or has space:
+                Set customer_name equal to owner_input
+                Display to user
+                    "--------------------"
+                    "Order for {}" and format as customer_name
+                break out of loop
+            else:
+                Display to user "That does not look like a name at all. Required Format (e.g. Ellan Bugas)"
+        try:
+            Set order_list to empty list
+            Set order_count to empty dictionary
+            Set sub_total to empty list
+            Set local_order to empty list
+            Infinite While Loop
+                try:
+                    Display to user "Enter either Cookies(1) Cupcakes(2) Cake(3) In the order of 1 2 3"
+                                    "In the order of 1 2 3"
+                    Ask user "What was ordered?: " and store in order_list
+                    if order_list is equal to ['1'] or order_list is equal to ['1', '2'] or order_list is equal to ['1', '3'] or order_list is equal to ['1', '2', '3'] or order_list is equal to ['2'] or order_list is equal to ['2', '3'] or order_list is equal to ['3']:
+                        Display to user "Success"
+                        break out of loop
+                    else:
+                        raise ValueError to run except block
+                    
+                except ValueError:
+                    Set order_list to empty list
+                    Display to user "Thats not 1, 2, or 3."
+                    
+            Define MaxMinOrder function and pass msg, maximum as parameters:
+                while True infinite Loop:
+                    try:
+                        Ask user with msg, force the input as int and store in owner_input
+                        if owner_input is less than or equal to maximum and does not equal 0:
+                            return owner_input
+                        else if owner_input greater than maximum:
+                            Display to user "That is greater than {}" format as maximum
+                        else:
+                            raise ValueError to run except block
+                        
+                    except ValueError:
+                        Set owner_input to 0
+                        Display to user "That is not a number, - 0 is not a number"
+                
+            for item(order) in order_list
+                if order is equal to '1':
+                    Set owner_input to "Quantity of Cookie Packs (${} pack): " and format COOKIES_PRICE 2dp
+                    Call MaxMinOrder function(pass in owner_input, cookie_cupcake_max) and store returned variable in owner_input
+                    Set cost to owner_input * COOKIES_PRICE and round to 2dp
+                    Add to order_count dictionary, with the key "Cookies Pack" and value as a list consisting of [owner_input, cost]
+                    
+                else if order is equal to '2':
+                    Set owner_input to "Quantity of Cupcakes Packs(${} pack): " and format CUPCAKES_PRICE 2dp
+                    Call MaxMinOrder function(pass in owner_input, cookie_cupcake_max) and store returned variable in owner_input
+                    Set cost to owner_input * CUPCAKES_PRICE and round to 2dp
+                    Add to order_count dictionary, with the key "Cupcakes Pack" and value as a list consisting of [owner_input, cost]
+                    
+                else if order is equal to '3':
+                    Set owner_input to "Quantity of Cakes(${} pack): " and format CAKE_PRICE 2dp
+                    Call MaxMinOrder function(pass in owner_input, cake_max)
+                    Set cost to owner_input * CAKE_PRICE and round to 2dp
+                    Add to order_count dictionary, with the key "Cakes" and value as a list consisting of [owner_input, cost]
+
+             Append customer_name to local_order
+             Display to user "======================"
+                             "Current Order Details"
+                             "----------------------"
+            for goods and amount in order_count items - i.e. accessing dictionary and setting key as goods, values as amount
+                Append the list [goods, amount[0], amount[1]] - i.e. amount is a list with 2 values, so [0] is quantity and [1] is cost
+                Append amount[1] to sub_total
+                Display to user "Order for {}" and format as goods
+                                "Amount: {}" and format as amount[0]
+                                "Sub Total: ${}" and format as amount[1]
+                                "======================"
+            Append local_order to save_order
+            
+        except StopLoop:
+            (This will be useful later UwU) - GUI
+            pass
+        
+        finally:
+            Display to user "Grand Total"
+                            "-------------------"
+                            save_order
+                            "-------------------"
+                            Set total_cost equal to the sum of sub_total + 10
+                            "Total Cost + $10 Travel Fee: ${}" and format total_cost
+                            "======================"
+            while True infinite Loop:
+                Display to user "Do you want to enter another order?"
+                Ask user "Yes/No: "force to be lowercase and store in owner_input
+                if owner_input is equal to 'yes':
+                    Display to user "-------------------"
+                                    "Resetting Variables - Total_Cost and Sub_Total is saved"
+                                    "-------------------"
+                    break out of loop
+                else if owner_input is equal to 'no':
+                    Display to user "-------------------"
+                                    "Alright.."
+                                    "Order Details Imported to order_book.txt - {}" format to shortdate
+                    Set progress to False
+                    break out of loop
+                else:
+                    Set owner_input to 0
+                    Display to user "That is neither Yes or No, please try Again"
+                    
+        if progress is equal to False:
+            Open/Create (if no file) order_book.txt as write and store in order_file
+            Write to order_file "===================================="
+                                "\n{} - {} Order Details" and format as Short Date and Day
+                                "\n[BakedGoods][Amount][SubCost]"
+                                "\n[Sub_Cost]"
+                                "\n------------------------------------\n"
+            for name in save_order:
+                Set count to 0
+                while True infinite loop:
+                    Write to order_file "Order for: {}" and format name[0]
+                    for i in range of length in name:
+                        if i does not equal count:
+                            break out of loop
+                        else:
+                            if i does not equal 0:
+                                Write to order_file "\n{}" and format name[count]
+                        Add 1 to count
+                    break
+                Write to order_file "\n------------------------------------\n"
+            Write to order_file "Total Cost of Orders + Travel Fee = ${}" and format total_cost
+                                "\n------------------------------------\n"
+            Close order_file
+                    
+Define a function named systemAdmin():
+    Display "Local Bakery Calculator"
+            "-------------------"
+    Call systemMain() function
+
+Call systemAdmin()
