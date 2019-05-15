@@ -9,7 +9,6 @@ cookie_max = 10
 cupcake_max = 10
 cake_max = 5
 
-
 SET_DATE = dt.datetime.now()
 print("--------------------")
 print("{} - {}".format(SET_DATE.strftime("%D"), SET_DATE.strftime("%A")))
@@ -26,7 +25,6 @@ def systemMain():
             if all(x.isalpha() or x.isspace() for x in owner_input):
                 customer_name = owner_input
                 print("--------------------")
-                print("Order for {}".format(customer_name))
                 break
             else:
                 print("That does not look like a name at all. Required Format (e.g. Ellan Bugas)")
@@ -41,7 +39,8 @@ def systemMain():
                     compare = ['1', '2', '3']
                     print("In the order of 1 2 3 - As long as its one of these numbers.")
                     order_list = input("What was ordered?: ").split()
-                    if any({*order_list} & {*compare}):
+                    print("-------------------")
+                    if any({*order_list} & {*compare}) and len(order_list) == 3 and order_list.count('1') <= 1 and order_list.count('3') <= 1 and order_list.count('2') <= 1: #FIX
                         break
                     else:
                         raise ValueError
@@ -54,7 +53,9 @@ def systemMain():
             def MaxMinOrder(msg, maximum, price):
                 while True:
                     try:
+                        print("Maximum: {} Min: 0".format(maximum))
                         owner_input = int(input(msg))
+                        print("-------------------")
                         if owner_input <= maximum and owner_input != 0:
                             amount_cost = round(owner_input * price)
                             return owner_input, amount_cost
@@ -65,7 +66,8 @@ def systemMain():
                             
                     except ValueError:
                         owner_input = 0
-                        print("That is not a number")
+                        print("Invalid Input")
+                        print("-------------------")
                 
             for order in order_list:
                 if order == '1':
@@ -84,9 +86,8 @@ def systemMain():
                     order_count["Cakes"] = [owner_input, cost]
 
             local_order.append(customer_name)
-            print("======================")
             print("Current Order Details")
-            print("----------------------")
+            print("======================")
             for goods, amount in order_count.items():
                 local_order.append([goods, amount[0], amount[1]])
                 sub_total.append(amount[1])
@@ -102,10 +103,8 @@ def systemMain():
         finally:
             print("Grand Total")
             print("-------------------")
-            print(save_order)
-            print("-------------------")
             total_cost += sum(sub_total, TRAVEL_FEE)
-            print("Total Cost + ${0:.2f} Travel Fee = ${1:.2f}".format(TRAVEL_FEE, total_cost))
+            print("Total Cost + ${:.2f} Travel Fee = ${:.2f}".format(TRAVEL_FEE, total_cost))
             print("======================")
             while True:
                 print("Do you want to enter another order?")
@@ -129,12 +128,12 @@ def systemMain():
             order_file = open("order_book.txt", "a")
             order_file.write("====================================")
             order_file.write("\n{} - {} Order Details".format(SET_DATE.strftime("%D"), SET_DATE.strftime("%A")))
-            order_file.write("\n[BakedGoods][Amount][SubCost]")
             order_file.write("\n------------------------------------\n")
             for name in save_order:
                 count = 0
                 while True:
                     order_file.write("Order for: {}".format(name[0]))
+                    order_file.write("\n[BakedGoods][Amount][SubCost]")
                     for i in range(len(name)):
                         if i != count:
                             break
@@ -155,3 +154,4 @@ def systemAdmin():
     systemMain()
                 
 systemAdmin()
+
