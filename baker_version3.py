@@ -3,9 +3,12 @@ import datetime as dt
 COOKIES_PRICE = 16.20
 CUPCAKES_PRICE = 21
 CAKE_PRICE = 59.50
+TRAVEL_FEE = 10
 
-cookie_cupcake_max = 10
+cookie_max = 10
+cupcake_max = 10
 cake_max = 5
+
 
 SET_DATE = dt.datetime.now()
 print("--------------------")
@@ -35,9 +38,10 @@ def systemMain():
             while True:
                 try:
                     print("Enter either Cookies(1) Cupcakes(2) Cake(3)")
-                    print("In the order of 1 2 3")
+                    compare = ['1', '2', '3']
+                    print("In the order of 1 2 3 - As long as its one of these numbers.")
                     order_list = input("What was ordered?: ").split()
-                    if order_list == ['1'] or order_list == ['1', '2'] or order_list == ['1', '3'] or order_list == ['1', '2', '3'] or order_list == ['2'] or order_list == ['2', '3'] or order_list == ['3']:
+                    if any({*order_list} & {*compare}):
                         break
                     else:
                         raise ValueError
@@ -45,13 +49,15 @@ def systemMain():
                 except ValueError:
                     order_list = []
                     print("Thats not 1, 2, or 3.")
+                    print("--------------------")
                     
-            def MaxMinOrder(msg, maximum):
+            def MaxMinOrder(msg, maximum, price):
                 while True:
                     try:
                         owner_input = int(input(msg))
                         if owner_input <= maximum and owner_input != 0:
-                            return owner_input
+                            amount_cost = round(owner_input * price)
+                            return owner_input, amount_cost
                         elif owner_input > maximum:
                             print("That is greater than {}".format(maximum))
                         else:
@@ -64,20 +70,17 @@ def systemMain():
             for order in order_list:
                 if order == '1':
                     owner_input = "Quantity of Cookie Packs(${0:.2f} pack): ".format(COOKIES_PRICE)
-                    owner_input = MaxMinOrder(owner_input, cookie_cupcake_max)
-                    cost = round(owner_input * COOKIES_PRICE)
+                    owner_input, cost = MaxMinOrder(owner_input, cookie_max, COOKIES_PRICE)
                     order_count["Cookies Pack"] = [owner_input, cost]
                     
                 elif order == '2':
                     owner_input = "Quantity of Cupcakes Packs(${0:.2f} each): ".format(CUPCAKES_PRICE)
-                    owner_input = MaxMinOrder(owner_input, cookie_cupcake_max)
-                    cost = round(owner_input * CUPCAKES_PRICE)
+                    owner_input, cost = MaxMinOrder(owner_input, cupcake_max, CUPCAKES_PRICE)
                     order_count["Cupcakes Pack"] = [owner_input, cost]
                     
                 elif order == '3':
                     owner_input = "Quantity of Cakes(${0:.2f} each): ".format(CAKE_PRICE)
-                    owner_input = MaxMinOrder(owner_input, cake_max)
-                    cost = round(owner_input * CAKE_PRICE)
+                    owner_input, cost = MaxMinOrder(owner_input, cake_max, CAKE_PRICE)
                     order_count["Cakes"] = [owner_input, cost]
 
             local_order.append(customer_name)
@@ -101,8 +104,8 @@ def systemMain():
             print("-------------------")
             print(save_order)
             print("-------------------")
-            total_cost += sum(sub_total, 10)
-            print("Total Cost + $10 Travel Fee: ${0:.2f}".format(total_cost))
+            total_cost += sum(sub_total, TRAVEL_FEE)
+            print("Total Cost + ${0:.2f} Travel Fee = ${1:.2f}".format(TRAVEL_FEE, total_cost))
             print("======================")
             while True:
                 print("Do you want to enter another order?")

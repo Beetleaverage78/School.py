@@ -1,12 +1,9 @@
-
 ====================================
-05/13/19 - Monday Order Details
+05/14/19 - Tuesday Order Details
 [BakedGoods][Amount][SubCost]
 ------------------------------------
-Order for: Ea
+Order for: Ellan
 ['Cookies Pack', 3, 49]
-['Cupcakes Pack', 3, 63]
-['Cakes', 3, 178]
 ------------------------------------
-Total Cost of Orders + Travel Fee = $300
+Total Cost of Orders + Travel Fee = $59
 ------------------------------------
