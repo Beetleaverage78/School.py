@@ -1,9 +1,0 @@
-====================================
-05/14/19 - Tuesday Order Details
-[BakedGoods][Amount][SubCost]
-------------------------------------
-Order for: Ellan
-['Cookies Pack', 3, 49]
-------------------------------------
-Total Cost of Orders + Travel Fee = $59
-------------------------------------

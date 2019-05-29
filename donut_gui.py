@@ -6,6 +6,29 @@ CHOCOLATE_PRICE = float(2.50)
 CARAMEL_PRICE = float(2.50)
 CINNAMON_PRICE = float(1.20)
 
+class process_orders():
+
+    def __init__(self, master, *args, **kwargs):
+        self.master = master
+        self.master.geometry('400x200+100+200')
+        self.master.title('Order Details')
+
+        self.init_window2()
+        
+    def write(self):
+        print("TestRun")
+        
+    def init_window2(self):
+        self.button1 = ttk.Button(self.master, text='Yes', command=self.write)
+        self.button1.grid(row=6, column=4, columnspan=2)
+
+        self.button1 = ttk.Button(self.master, text='No', command=self.write)
+        self.button1.grid(row=6, column=8, columnspan=2)
+        
+
+        
+            
+        
 class DonutCalculator(ttk.Frame):
 
     def __init__(self, master, goodbye, *args, **kwargs):
@@ -13,7 +36,11 @@ class DonutCalculator(ttk.Frame):
         self.root = master
         self.init_window()
         self.goodbye = "Goodbye"
- 
+
+    def process(self):
+        orders = tkinter.Toplevel(self.master)
+        gui2 = process_orders(orders, "")
+    
     def exit_prog(self):
         """Exits program."""
         print(self.goodbye)
@@ -33,9 +60,9 @@ class DonutCalculator(ttk.Frame):
                     sub_total3 = donut3 * CINNAMON_PRICE
                     total = sub_total1 + sub_total2 + sub_total3
                     self.sub_total_label1['text'] = "${:.2f}".format(sub_total1)
-                    self.sub_total_label2['text'] = "{:.2f}".format(sub_total2)
-                    self.sub_total_label3['text'] = "{:.2f}".format(sub_total3)
-                    self.grand_total_label['text'] = "{:.2f}".format(total)
+                    self.sub_total_label2['text'] = "${:.2f}".format(sub_total2)
+                    self.sub_total_label3['text'] = "${:.2f}".format(sub_total3)
+                    self.grand_total_label['text'] = "${:.2f}".format(total)
                 else:
                     raise ValueError or TypeError
                     
@@ -54,7 +81,7 @@ class DonutCalculator(ttk.Frame):
             
 
         
-        self.root.title('Donut Order Checker')
+        self.root.title('Donut Order Calculator')
         self.root.option_add('*tearOff', 'FALSE')
  
         self.grid(column=0, row=0, sticky='nsew')
@@ -77,11 +104,15 @@ class DonutCalculator(ttk.Frame):
         # ttk.Separator(self, orient='horizontal').grid(column=0,row=6, columnspan=8, sticky='we')
         # -------------------------------------------------------------------------------
 
+        # Middle Buttons
         self.exit_button = ttk.Button(self, text='Calculate', command=self.calculate)
-        self.exit_button.grid(column=0, row=6, columnspan=4)
+        self.exit_button.grid(column=0, row=6, columnspan=3)
+
+        self.finish_button = ttk.Button(self, text='Process Orders', command=self.process)
+        self.finish_button.grid(column=1, row=6, columnspan=3)
         
         self.calc_button = ttk.Button(self, text='Exit', command=self.exit_prog)
-        self.calc_button.grid(column=2, row=6, columnspan=8)
+        self.calc_button.grid(column=2, row=6, columnspan=7)
         
         # Message Label to inform user to use correct data type -------------------------
         self.message_frame = ttk.LabelFrame(self, text='Output',height=100)
@@ -151,6 +182,6 @@ class DonutCalculator(ttk.Frame):
  
 if __name__ == '__main__':
     root = tkinter.Tk()
-    
-    obj = DonutCalculator(root, "")
+    gui1 = DonutCalculator(root, "")
     root.mainloop()
+    
