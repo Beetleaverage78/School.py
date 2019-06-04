@@ -7,12 +7,10 @@ CHOCOLATE_PRICE = float(2.50)
 CARAMEL_PRICE = float(2.50)
 CINNAMON_PRICE = float(1.20)
 
-
-          
-        
+def test():
+    print("It works")
 class DonutCalculator(ttk.Frame):
-    global info
-    info = "No action"
+    
     def __init__(self, master, goodbye, *args, **kwargs):
         ttk.Frame.__init__(self, master, *args, **kwargs)
         self.root = master
@@ -55,7 +53,6 @@ class DonutCalculator(ttk.Frame):
                 print("Ready to enter another number if needed")
                 break
             finally:
-                info = "Test"
                 print("Read the reminder message")
                 break
  
@@ -71,7 +68,7 @@ class DonutCalculator(ttk.Frame):
         # Menu ----------------------------------------
         self.menubar = tkinter.Menu(self.root)
         self.menu_file = tkinter.Menu(self.menubar)
-        self.menu_file.add_command(label='Exit', command=self.exit_prog)
+        self.menu_file.add_command(label='Exit', command=test)
         self.menubar.add_cascade(menu=self.menu_file, label='File')
         self.root.config(menu=self.menubar)
         # ---------------------------------------------
@@ -80,7 +77,6 @@ class DonutCalculator(ttk.Frame):
         ttk.Separator(self, orient='horizontal').grid(column=0,row=2, columnspan=8, sticky='we')
         ttk.Separator(self, orient='vertical').grid(column=1,row=2, rowspan=4, sticky='ns')
         ttk.Separator(self, orient='vertical').grid(column=3,row=2, rowspan=4, sticky='ns')
-        # ttk.Separator(self, orient='horizontal').grid(column=0,row=6, columnspan=8, sticky='we')
         # -------------------------------------------------------------------------------
 
         # Middle Buttons
@@ -97,7 +93,7 @@ class DonutCalculator(ttk.Frame):
         self.message_frame = ttk.LabelFrame(self, text='Output',height=100)
         self.message_frame.grid(column=0, row=7, columnspan=8, sticky='nesw')
  
-        self.message_label = ttk.Label(self.message_frame, text=info)
+        self.message_label = ttk.Label(self.message_frame, text="Input number")
         self.message_label.grid(column=0, row=0)
         # -------------------------------------------------------------------------------
 
