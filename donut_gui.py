@@ -1,163 +1,278 @@
-import time 
-import tkinter
+import time as t
+import sys
+import tkinter as tk
 from tkinter import ttk
-from tkinter import messagebox as msg
+from tkinter import simpledialog as sd
+from tkinter import messagebox as mg
 
 CHOCOLATE_PRICE = float(2.50)
 CARAMEL_PRICE = float(2.50)
 CINNAMON_PRICE = float(1.20)
 
-def test():
-    print("It works")
+msg = ""
+
+
+        
+        
 class DonutCalculator(ttk.Frame):
     
-    def __init__(self, master, goodbye, *args, **kwargs):
+    def __init__(self, master, exit_program, *args, **kwargs):
         ttk.Frame.__init__(self, master, *args, **kwargs)
         self.root = master
         self.init_window()
-        self.goodbye = "Goodbye"
 
-    def process(self):
-        msg.showinfo("Test", "Some Message Box")
-    
-    def exit_prog(self):
-        """Exits program."""
-        print(self.goodbye)
-        time.sleep(5)
-        quit()
- 
-    def calculate(self):
-        """Calculates the donut cost."""
-        while True:
-            try:
-                donut1 = int(self.donut1_entry.get())
-                donut2 = int(self.donut2_entry.get())
-                donut3 = int(self.donut3_entry.get())
-                print(donut1)
-                if (donut1 >=5 and donut2 >= 5 and donut3 >= 5) and (donut1 < 30 and donut2 < 30 and donut3 < 30):
-                    sub_total1 = donut1 * CHOCOLATE_PRICE
-                    sub_total2 = donut2 * CARAMEL_PRICE
-                    sub_total3 = donut3 * CINNAMON_PRICE
-                    total = sub_total1 + sub_total2 + sub_total3
-                    self.sub_total_label1['text'] = "${:.2f}".format(sub_total1)
-                    self.sub_total_label2['text'] = "${:.2f}".format(sub_total2)
-                    self.sub_total_label3['text'] = "${:.2f}".format(sub_total3)
-                    self.grand_total_label['text'] = "${:.2f}".format(total)
-                else:
-                    raise ValueError or TypeError
-                    
-            except ValueError or TypeError:
-                print("Oops incorrect data type")
-                raise
-            else:
-                print("Ready to enter another number if needed")
-                break
-            finally:
-                print("Read the reminder message")
-                break
- 
-    def init_window(self):
-        """Builds GUI."""
-            
+    def reset(self):
+        global choc_count, caram_count, cinna_count, total_cost, choc_total, caram_total, cinna_total, var1, var2, var3
+        choc_count = 0
+        caram_count = 0
+        cinna_count = 0
 
+        choc_total = 0
+        caram_total = 0
+        cinna_total = 0
+
+        total_cost = 0
+
+        var1 = tk.DoubleVar(value=0)
+        var2 = tk.DoubleVar(value=0)
+        var3 = tk.DoubleVar(value=0)
         
+    def exit_program(self):
+        print("YEEET MY YAH")
+        quit()
+
+    def process_orders(self):
+        
+        check = mg.askyesno("Process Orders", "Is this the final order?")
+        if check == True:
+            self.message_label['text'] = "Processing orders....."
+            self.finish_button['state'] = 'disabled'
+            self.calculate_button['state'] = 'disabled'
+            mg.showinfo('Write to File',"Okay, check the Bottom Terminal for details")
+            t.sleep(2)    
+            self.message_label['text'] ="""Order Details Written to File\n--------------------------------\nCheck Terminal behind this Window"""
+            
+            if choc_count > 0:
+                print("Chocolate Donuts")
+                print("------------------")
+                print("Amount: {}".format(choc_count))
+                print("Sub Cost: ${:.2f}".format(choc_total))
+            else:
+                print("No Chocolate Donuts Ordered")
+            print("---------------------")
+            if caram_count > 0:
+                print("Caramel Donuts")
+                print("------------------")
+                print("Amount: {}".format(caram_count))
+                print("Sub Cost: ${:.2f}".format(caram_total))
+            else:
+                print("No Caramel Donuts Ordered")
+            print("---------------------")
+            if cinna_count > 0:
+                print("Cinnamon Donuts")
+                print("------------------")
+                print("Amount: {}".format(cinna_count))
+                print("Sub Cost: ${:.2f}".format(cinna_total))
+            else:
+                print("No Cinnamon Donuts Ordered")
+            print("---------------------")
+            print("Total Cost: ${:.2f}".format(total_cost))
+
+            print("=================================")
+            print("Program has been Reset")
+            self.quit()
+        else:
+            return
+        
+    def calculate_method(self, donut, price, count):
+        global msg
+        sub_total = 0
+        count += donut
+        if count < 5:
+            msg = "Minimum of 5 Donuts"
+            judge = False
+            return judge, sub_total
+            
+        elif count  >= 30:
+            msg = "Maximum of 30 Donuts"
+            judge = False
+            return judge, sub_total
+            
+        elif count >= 5 or count <= 30:
+            sub_total = donut * price
+            judge = True
+            self.grand_total_label['text'] = "${:.2f}".format(total_cost)
+            return judge, sub_total
+        
+    def calculate(self):
+        global choc_count, caram_count, cinna_count, total_cost, choc_total, caram_total, cinna_total, var1, var2, var3  
+        judge = 0
+        total = 0
+        donut1 = int(self.donut1_entry.get())
+        if donut1 != 0:
+            judge, total = self.calculate_method(donut1, CHOCOLATE_PRICE, choc_count)
+            if judge == True:
+                choc_count += donut1
+                choc_total += total
+                self.sub_total_label1a['text'] = "Success!- Currently {} Donuts".format(choc_count)
+                self.sub_total_label1b['text'] = "${:.2f}".format(choc_total)
+            else:
+                self.sub_total_label1a['text'] = msg
+        else:
+            if choc_count > 0:
+                self.sub_total_label1a['text'] = "Current Donuts: {}".format(choc_count)
+            else:
+                self.sub_total_label1a['text'] = "No Donuts Ordered"
+            
+        donut2 = int(self.donut2_entry.get())
+        if donut2 != 0:
+            judge, total = self.calculate_method(donut2, CARAMEL_PRICE, caram_count)
+            if judge == True:
+                caram_count += donut2
+                caram_total += total
+                self.sub_total_label2a['text'] = "Success!- Currently {} Donuts".format(caram_count)
+                self.sub_total_label2b['text'] = "${:.2f}".format(caram_total)
+            else:
+                self.sub_total_label2a['text'] = msg
+        else:
+            if caram_count > 0:
+                self.sub_total_label2a['text'] = "Current Donuts: {}".format(caram_count)
+            else:
+                self.sub_total_label2a['text'] = "No Donuts Ordered"
+            
+        donut3 = int(self.donut3_entry.get())
+        if donut3 != 0:
+            judge, total = self.calculate_method(donut3, CINNAMON_PRICE, cinna_count)
+            if judge == True:
+                cinna_count += donut3
+                cinna_total += total
+                self.sub_total_label3a['text'] = "Success!-Currently {} Donuts".format(cinna_count)
+                self.sub_total_label3b['text'] = "${:.2f}".format(cinna_total)
+            else:
+                self.sub_total_label3a['text'] = msg
+        else:
+            if cinna_count > 0:
+                self.sub_total_label3a['text'] = "Current Donuts: {}".format(cinna_count)
+            else:
+                self.sub_total_label3a['text'] = "No Donuts Ordered"
+
+        var1.set('0')
+        var2.set('0')
+        var3.set('0')
+        
+        if choc_count > 0 or caram_count > 0 or cinna_count > 0:
+            self.message_label['text'] = "Ready to Write to order_book.txt"
+            total_cost = choc_total + caram_total + cinna_total + 10
+            self.grand_total_label['text'] = "${:.2f}".format(total_cost)
+            self.finish_button['state'] = 'normal'
+        else:
+            self.message_label['text'] = "No orders were made"
+    def init_window(self):
+        self.reset()
         self.root.title('Donut Order Calculator')
         self.root.option_add('*tearOff', 'FALSE')
         self.grid(column=0, row=0, sticky='nsew')
 
-        # Menu ----------------------------------------
-        self.menubar = tkinter.Menu(self.root)
-        self.menu_file = tkinter.Menu(self.menubar)
-        self.menu_file.add_command(label='Exit', command=test)
-        self.menubar.add_cascade(menu=self.menu_file, label='File')
-        self.root.config(menu=self.menubar)
-        # ---------------------------------------------
-
         # Separator helps order the info on the GUI -------------------------------------
         ttk.Separator(self, orient='horizontal').grid(column=0,row=2, columnspan=8, sticky='we')
-        ttk.Separator(self, orient='vertical').grid(column=1,row=2, rowspan=4, sticky='ns')
-        ttk.Separator(self, orient='vertical').grid(column=3,row=2, rowspan=4, sticky='ns')
+        ttk.Separator(self, orient='vertical').grid(column=1,row=2, rowspan=5, sticky='ns')
+        ttk.Separator(self, orient='vertical').grid(column=3,row=2, rowspan=5, sticky='ns')
         # -------------------------------------------------------------------------------
 
-        # Middle Buttons
-        self.exit_button = ttk.Button(self, text='Calculate', command=self.calculate)
-        self.exit_button.grid(column=0, row=6, columnspan=3)
-
-        self.finish_button = ttk.Button(self, text='Process Orders', command=self.process)
-        self.finish_button.grid(column=1, row=6, columnspan=3)
+        # Middle Button - command=lambda: self.calculate("Chocolate Donuts")
+        self.calculate_button = ttk.Button(self, text='Calculate', command=self.calculate)
+        self.calculate_button.grid(column=0, row=7, columnspan=3)
         
-        self.calc_button = ttk.Button(self, text='Exit', command=self.exit_prog)
-        self.calc_button.grid(column=2, row=6, columnspan=7)
+        self.finish_button = ttk.Button(self, text='Process Orders', command=self.process_orders, state='disabled')
+        self.finish_button.grid(column=1, row=7, columnspan=3)
+
+        self.calc_button = ttk.Button(self, text='Exit', command=self.exit_program)
+        self.calc_button.grid(column=2, row=7, columnspan=3)
         
         # Message Label to inform user to use correct data type -------------------------
         self.message_frame = ttk.LabelFrame(self, text='Output',height=100)
-        self.message_frame.grid(column=0, row=7, columnspan=8, sticky='nesw')
+        self.message_frame.grid(column=0, row=8, columnspan=8, sticky='nesw')
  
-        self.message_label = ttk.Label(self.message_frame, text="Input number")
+        self.message_label = ttk.Label(self.message_frame, text="No Action Detected")
         self.message_label.grid(column=0, row=0)
         # -------------------------------------------------------------------------------
 
         # Chocolate Donut Input ---------------------------------------------------------
-        default = tkinter.DoubleVar(value=0)
-        self.donut1_entry = tkinter.Spinbox(self, from_=0, to=30, textvariable=default, state='readonly')
+        
+        self.donut1_entry = tk.Spinbox(self, from_=0, to=10, textvariable=var1, state='readonly')
         self.donut1_entry.grid(column=0, row=4)
         
-        self.sub_total_frame1 = ttk.LabelFrame(self, text='Sub Total',height=100)
-        self.sub_total_frame1.grid(column=0, row=5, columnspan=1, sticky='we')
+        self.sub_total_frame1a = ttk.LabelFrame(self, text='Output',height=100)
+        self.sub_total_frame1a.grid(column=0, row=5, columnspan=1, sticky='esw')
 
-        self.sub_total_label1 = ttk.Label(self.sub_total_frame1, text='0')
-        self.sub_total_label1.grid(column=0, row=0)
+        self.sub_total_label1a = ttk.Label(self.sub_total_frame1a, text='None')
+        self.sub_total_label1a.grid(column=0, row=0)
+
+        self.sub_total_frame1b = ttk.LabelFrame(self, text='Sub Total',height=100)
+        self.sub_total_frame1b.grid(column=0, row=6, columnspan=1, stick='esw')
+
+        self.sub_total_label1b = ttk.Label(self.sub_total_frame1b, text='0')
+        self.sub_total_label1b.grid(column=0, row=0)
         # -------------------------------------------------------------------------------
 
         # Caramel Donut Input -----------------------------------------------------------
-        self.donut2_entry = ttk.Entry(self, width=5)
-        self.donut2_entry.insert(0, 0)
+        
+        self.donut2_entry = tk.Spinbox(self, from_=0, to=10, textvariable=var2, state='readonly')
         self.donut2_entry.grid(column=2, row=4)
 
-        self.sub_total_frame2 = ttk.LabelFrame(self, text='Sub Total',height=100)
-        self.sub_total_frame2.grid(column=2, row=5, columnspan=1, sticky='we')
+        self.sub_total_frame2a = ttk.LabelFrame(self, text='Output',height=100)
+        self.sub_total_frame2a.grid(column=2, row=5, columnspan=1, sticky='esw')
 
-        self.sub_total_label2 = ttk.Label(self.sub_total_frame2, text='0')
-        self.sub_total_label2.grid(column=0, row=0)
+        self.sub_total_label2a = ttk.Label(self.sub_total_frame2a, text='None')
+        self.sub_total_label2a.grid(column=0, row=0)
+
+        self.sub_total_frame2b = ttk.LabelFrame(self, text='Sub Total',height=100)
+        self.sub_total_frame2b.grid(column=2, row=6, columnspan=1, sticky='esw')
+
+        self.sub_total_label2b = ttk.Label(self.sub_total_frame2b, text='0')
+        self.sub_total_label2b.grid(column=0, row=0)
         # -------------------------------------------------------------------------------
 
         # Cinnamon Donut Input ----------------------------------------------------------
-        self.donut3_entry = ttk.Entry(self, width=5)
-        self.donut3_entry.insert(0, 0)
+
+        self.donut3_entry = tk.Spinbox(self, from_=0, to=10, textvariable=var3, state='readonly')
         self.donut3_entry.grid(column=4, row=4)
         
-        self.sub_total_frame3 = ttk.LabelFrame(self, text='Sub Total',height=100)
-        self.sub_total_frame3.grid(column=4, row=5, columnspan=1, sticky='we')
+        self.sub_total_frame3a = ttk.LabelFrame(self, text='Output',height=100)
+        self.sub_total_frame3a.grid(column=4, row=5, columnspan=1, sticky='esw')
 
-        self.sub_total_label3 = ttk.Label(self.sub_total_frame3, text='0')
-        self.sub_total_label3.grid(column=0, row=0)
+        self.sub_total_label3a = ttk.Label(self.sub_total_frame3a, text='None')
+        self.sub_total_label3a.grid(column=0, row=0)
+
+        self.sub_total_frame3b = ttk.LabelFrame(self, text='Sub Total',height=100)
+        self.sub_total_frame3b.grid(column=4, row=6, columnspan=1, sticky='esw')
+
+        self.sub_total_label3b = ttk.Label(self.sub_total_frame3b, text='0')
+        self.sub_total_label3b.grid(column=0, row=0)
         # -------------------------------------------------------------------------------
-        
+
         # Total Cost Output -------------------------------------------------------------
         self.grand_total_frame = ttk.LabelFrame(self, text='Total Cost',height=100)
-        self.grand_total_frame.grid(column=0, row=8, columnspan=8, sticky='nesw')
+        self.grand_total_frame.grid(column=0, row=9, columnspan=8, sticky='nesw')
  
         self.grand_total_label = ttk.Label(self.grand_total_frame, text='0')
         self.grand_total_label.grid(column=0, row=0)
         # -------------------------------------------------------------------------------
-
         
         ttk.Label(self, text='Donut Order Checker').grid(column=0, row=0, columnspan=8)
-        ttk.Label(self, text='Max Order per donut type is 30, Min is 5').grid(column=0, row=2, columnspan=8)
-        ttk.Label(self, text='Chocolate Donut Quantity').grid(column=0, row=3, sticky='e')
-        ttk.Label(self, text='Caramel Donut Quantity').grid(column=2, row=3, sticky='w')
-        ttk.Label(self, text='Cinnamon Donut Quantity').grid(column=4, row=3, sticky='w')
-         
+        ttk.Label(self, text='Max Order per donut type is 30, Min is 5 - Leave Blank if zero donuts is ordered').grid(column=0, row=1, columnspan=8)
+        ttk.Label(self, text='Chocolate Donuts - ${:.2f} each'.format(CHOCOLATE_PRICE)).grid(column=0, row=3, columnspan=1)
+        ttk.Label(self, text='Caramel Donuts - ${:.2f} each'.format(CARAMEL_PRICE)).grid(column=2, row=3, columnspan=1)
+        ttk.Label(self, text='Cinnamon Donuts - ${:.2f} each'.format(CINNAMON_PRICE)).grid(column=4, row=3, columnspan=1)
 
         for child in self.winfo_children():
             child.grid_configure(padx=10, pady=10)
-
-
-
- 
-if __name__ == '__main__':
-    root = tkinter.Tk()
-    tkinter.Label(root, text="First").grid(row=0)
-    gui1 = DonutCalculator(root, "")
-    root.mainloop()
     
+if __name__ == '__main__':
+    while True:
+        root = tk.Tk()
+        gui = DonutCalculator(root, "")
+        root.mainloop()
+        root.destroy()
+
+            
