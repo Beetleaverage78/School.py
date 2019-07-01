@@ -7,6 +7,7 @@ from tkinter import messagebox as mg
 COOKIES_PRICE = float(16.20)
 CUPCAKES_PRICE = float(21)
 CAKE_PRICE = float(59.50)
+TRAVEL_FEE = float(10)
 
 COOKIES_MAX = 10
 CUPCAKES_MAX = 10
@@ -75,6 +76,14 @@ class DonutGui(tk.Frame):
         orders['Cupcakes'] = [cupcakes_count, round(cupcakes_total)]
         orders['Cakes'] = [cakes_count, round(cakes_total)]
         mg.showinfo('Order Details', orders)
+        order_book = open("order_book.txt", "a")
+        order_book.write("\nDate: {} {} {} - {}".format(date.strftime("%d"), date.strftime("%B"), date.strftime("%Y"), date.strftime("%I:%M %p")))
+        order_book.write("\nOrders for {} {}".format(fname, lname))
+        order_book.write("\n----------------------------------")
+        order_book.write("\n[Order_Type][Amount][Sub_total]")
+        order_book.write("\n{}".format(orders))
+        order_book.write("\nTotal Cost: ${:.2f}".format(total_cost))
+        order_book.write("\n====================================")
         mg.showinfo('Resetting', "Program will now reset to prepare for another order")
         self.init_window()
                              
@@ -91,6 +100,7 @@ class DonutGui(tk.Frame):
                 cookies_count += cookies
                 cookies_total += total
                 self.cookies_sub_label['text'] = "${:.2f}".format(cookies_total)
+                self.cookie_pack_label['text'] = "Cookie Packs: {}".format(cookies)
             else:
                 mg.showerror('Invalid Input', "That is more than 10 Cookie packs, You are trying to order {} more, When you have already {}".format(cookies, cookies_count))
         else:
@@ -103,6 +113,7 @@ class DonutGui(tk.Frame):
                 cupcakes_count += cupcakes
                 cupcakes_total += total
                 self.cupcakes_sub_label['text'] = "${:.2f}".format(cupcakes_total)
+                self.cupcake_pack_label['text'] = "Cupcake Packs: {}".format(cupcakes)
             else:
                 mg.showerror('Invalid Input', "That is more than 10 Cupcake packs, You are trying to order {} more, When you have already ordered {}".format(cupcakes, cupcakes_count))
         else:
@@ -128,7 +139,7 @@ class DonutGui(tk.Frame):
 
         if cookies > 0 or cupcakes > 0 or cakes > 0:
             self.process_button['state'] = 'normal'
-            total_cost = cookies_total + cupcakes_total + cakes_total + 10
+            total_cost = cookies_total + cupcakes_total + cakes_total + TRAVEL_FEE
             self.total_label['text'] = "${:.2f}".format(total_cost)
             self.output_frame['text'] = "Output: Successful Calculation"
         else:
@@ -178,7 +189,7 @@ class DonutGui(tk.Frame):
         self.cake_label = tk.Label(self.output_frame, text='Cakes: 0')
         self.cake_label.grid(column=4, row=1, sticky='we')
 
-        self.total_frame = tk.LabelFrame(self, text='Total Cost', bd='2px')
+        self.total_frame = tk.LabelFrame(self, text='Total Cost + ${:.2f} Travel Fee'.format(TRAVEL_FEE), bd='2px')
         self.total_frame.grid(column=0, row=13, columnspan=8, sticky='nesw')
         
         self.total_label = tk.Label(self.total_frame, text='$0.00')
@@ -253,4 +264,3 @@ if __name__ == '__main__':
         root = tk.Tk()
         gui = DonutGui(root, "")
         root.mainloop()
-        

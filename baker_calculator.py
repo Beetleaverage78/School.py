@@ -22,9 +22,17 @@ def name_method(fname, lname):
         judge = False
         msg = "First Name is too short, needs to be 2 or more characters long"
         return judge, msg
+    elif len(fname) > 10:
+        judge = False
+        msg = "First Name is too long"
+        return judge, msg
     elif len(lname) < 2:
         judge = False
         msg = "Last Name is too short, needs to be 2 or more characters long"
+        return judge, msg
+    elif len(lname) > 10:
+        judge = False
+        msg = "Last Name is too long"
         return judge, msg
     
     print("Checking for Spaces")
@@ -83,4 +91,3 @@ def calculate_method(order, price, count, order_max):
         sub_total = count * price
         print("-----Successful Calculation----")
         return judge, sub_total
-        
