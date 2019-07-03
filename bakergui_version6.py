@@ -101,6 +101,7 @@ def calculate_method(order, price, count, order_max):
     elif count > 0:
         judge = True
         sub_total = count * price
+        print(sub_total)
         print("-----Successful Calculation----")
         return judge, sub_total
 
@@ -186,9 +187,9 @@ class DonutGui(tk.Frame):
             judge, total = calculate_method(cookies, COOKIES_PRICE, cookies_count, COOKIES_MAX)
             if judge == True:
                 cookies_count += cookies
-                cookies_total += total
+                cookies_total = total
                 self.cookies_sub_label['text'] = "${:.2f}".format(cookies_total)
-                self.cookie_pack_label['text'] = "Cookie Packs: {}".format(cookies)
+                self.cookie_pack_label['text'] = "Cookie Packs: {}".format(cookies_count)
             else:
                 mg.showerror('Invalid Input', "That is more than 10 Cookie packs, You are trying to order {} more, When you have already {}".format(cookies, cookies_count))
         else:
@@ -199,9 +200,9 @@ class DonutGui(tk.Frame):
             judge, total = calculate_method(cupcakes, CUPCAKES_PRICE, cupcakes_count, CUPCAKES_MAX)
             if judge == True:
                 cupcakes_count += cupcakes
-                cupcakes_total += total
+                cupcakes_total = total
                 self.cupcakes_sub_label['text'] = "${:.2f}".format(cupcakes_total)
-                self.cupcake_pack_label['text'] = "Cupcake Packs: {}".format(cupcakes)
+                self.cupcake_pack_label['text'] = "Cupcake Packs: {}".format(cupcakes_count)
             else:
                 mg.showerror('Invalid Input', "That is more than 10 Cupcake packs, You are trying to order {} more, When you have already ordered {}".format(cupcakes, cupcakes_count))
         else:
@@ -212,9 +213,9 @@ class DonutGui(tk.Frame):
             judge, total = calculate_method(cakes, CAKE_PRICE, cakes_count, CAKE_MAX)
             if judge == True:
                 cakes_count += cakes
-                cakes_total += total
+                cakes_total = total
                 self.cakes_sub_label['text'] = "${:.2f}".format(cakes_total)
-                self.cake_label['text'] = "Cakes: {}".format(cakes)
+                self.cake_label['text'] = "Cakes: {}".format(cakes_count)
             else:
                 mg.showerror('Invalid Input', "That is more than 5 Cakes, You are trying to order {} more, When you have already ordered {}".format(cakes, cakes_count))
         else:
@@ -334,9 +335,9 @@ class DonutGui(tk.Frame):
         self.cakes_sub_label.grid(column=0, row=0)
         # -----------------------------------------------------------------------------
 
-        # Initialise Labels -----------------------------------------------------------------------------------------------------------
+        # Standalone Labels -----------------------------------------------------------------------------------------------------------
         tk.Label(self, text="{} {} {} - {}".format(date.strftime("%d"), date.strftime("%B"), date.strftime("%Y"), date.strftime("%I:%M %p"))).grid(column=0, row=0, columnspan=8)
-        tk.Label(self, text='Max Order is [] - Minimum is []').grid(column=0, row=3, columnspan=8)
+        tk.Label(self, text='Cookie & Cupcake Max is 10 - Min 0. Cakes Max is 5 - Min 0').grid(column=0, row=3, columnspan=8)
         tk.Label(self, text='Cookie Pack of 12 - ${:.2f} each pack'.format(COOKIES_PRICE)).grid(column=0, row=4, columnspan=1, sticky='w')
         tk.Label(self, text='Cupcake Pack of 6- ${:.2f} each pack'.format(CUPCAKES_PRICE)).grid(column=0, row=5, columnspan=1, sticky='w')
         tk.Label(self, text='Single Cake - ${:.2f} each'.format(CAKE_PRICE)).grid(column=0, row=6, columnspan=1, sticky='w')
