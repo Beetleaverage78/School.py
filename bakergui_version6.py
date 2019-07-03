@@ -173,6 +173,7 @@ class DonutGui(tk.Frame):
         order_book.write("\n{}".format(orders))
         order_book.write("\nTotal Cost: ${:.2f}".format(total_cost))
         order_book.write("\n====================================")
+        order_book.close()
         mg.showinfo('Resetting', "Program will now reset to prepare for another order")
         self.init_window()
                              
